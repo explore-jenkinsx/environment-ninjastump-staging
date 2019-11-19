@@ -1,14 +1,31 @@
-expose:
-  Args: 
-    - --v
-    - 4
-  Annotations:
-    helm.sh/hook: post-install,post-upgrade
-    helm.sh/hook-delete-policy: hook-succeeded
-
+PipelineSecrets:
+  DockerConfig: '{"auths":{"jxaksdemo2.azurecr.io":{"auth":"anhha3NkZW1vMjpYSHJ5WTRKc2twb1kzcS9BbU5Ec2JmOWZ5T3J2R1BZcw=="}}}'
 cleanup:
-  Args: 
-    - --cleanup
   Annotations:
     helm.sh/hook: pre-delete
     helm.sh/hook-delete-policy: hook-succeeded
+  Args:
+  - --cleanup
+controllerbuild:
+  enabled: true
+controllerworkflow:
+  enabled: false
+dockerRegistry: jxaksdemo2.azurecr.io
+expose:
+  Annotations:
+    helm.sh/hook: post-install,post-upgrade
+    helm.sh/hook-delete-policy: hook-succeeded
+  Args:
+  - --v
+  - 4
+  config:
+    domain: 52.142.31.164.nip.io
+    exposer: Ingress
+    http: "true"
+jenkins:
+  Servers:
+    Global:
+      EnvVars:
+        TILLER_NAMESPACE: kube-system
+  enabled: false
+prow: {}
